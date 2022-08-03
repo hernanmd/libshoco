@@ -10,8 +10,11 @@ BaselineOfLibShoco >> baseline: spec [
 	spec
 		for: #(common)
 		do: [ 
+			spec
+				baseline: 'GitBridge'
+				with: [ spec repository: 'github://jecisc/GitBridge/src' ].
 			spec 
-				package: 'LibShoco';
+				package: 'LibShoco'			with: [ spec requires: #(GitBridge) ];
 				package: 'LibShoco-Tests'	with: [ spec requires: #(LibShoco) ].
 			spec 
 				group: 'Core' 						with: #('LibShoco');
