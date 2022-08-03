@@ -8,7 +8,6 @@
 - [Installation](#installation)
   - [How to compile the library](#how-to-compile-the-library)
   - [Baseline String](#baseline-string)
-- [Implementation notes](#implementation-note)
 - [Usage](#usage)
 - [Contribute](#contribute)
   - [Version management](#version-management)
@@ -16,7 +15,7 @@
 
 # Description
 
-Shoco exposes two functions, one to compress an input String and another one to decompress. Please read the [library documentation](https://ed-von-schleck.github.io/shoco/) for use cases and technical notes.
+Shoco is a MIT-licensed C library which provides fast compressor for short strings optimized by default for English words, but customizable to other alphabet models based on your own data. Compression is performed using [entropy encoding](https://en.wikipedia.org/wiki/Entropy_encoding). Shoco exposes two functions, one to compress an input String and another one to decompress. Please read the [library documentation](https://ed-von-schleck.github.io/shoco/) for use cases and technical notes.
 
 # Installation
 
