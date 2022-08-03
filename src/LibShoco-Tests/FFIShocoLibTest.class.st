@@ -35,19 +35,6 @@ FFIShocoLibTest >> testShocoCompress [
 ]
 
 { #category : #tests }
-FFIShocoLibTest >> testShocoCompressDecompress [
-
-	| inString compressedString uncompressedString |
-	
-	inString := 'The city shark is at the dark end of the alleyway'.
-	compressedString := FFIShocoLib uniqueInstance shocoCompress: inString.
-	uncompressedString := FFIShocoLib uniqueInstance shocoDecompress: compressedString.
-	
-	self assert: inString equals: uncompressedString
-
-]
-
-{ #category : #tests }
 FFIShocoLibTest >> testShocoCompressLengthOutputBufSize [
 
 	| nBytes outString |
@@ -84,6 +71,19 @@ FFIShocoLibTest >> testShocoCompressOutputBufSize [
 	outString := ' '.
 	nBytes := shocoLib shocoCompress: 'ä' output: outString bufSize: 1.
 	self assert: nBytes equals: 2.
+]
+
+{ #category : #tests }
+FFIShocoLibTest >> testShocoDecompress [
+
+	| inString compressedString uncompressedString |
+	
+	inString := 'The city shark is at the dark end of the alleyway'.
+	compressedString := FFIShocoLib uniqueInstance shocoCompress: inString.
+	uncompressedString := FFIShocoLib uniqueInstance shocoDecompress: compressedString.
+	
+	self assert: inString equals: uncompressedString
+
 ]
 
 { #category : #tests }
