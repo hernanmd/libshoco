@@ -14,6 +14,13 @@ The restless dreams of youth' size. ""69""
 The restless dreams of youth') size. ""49""
 ```
 
+Of course Shoco should decompress to the same input `String`:
+
+```language=Pharo
+FFIShocoLib uniqueInstance shocoDecompress: 
+	(FFIShocoLib uniqueInstance shocoCompress: 'The city shark is at the dark end of the alleyway').
+```
+
 ## Customization
 
 You should follow two steps:
@@ -69,7 +76,7 @@ FFIShocoLib >> shocoDecompress: inputString [
 	
 	bufSize := inputString size * 4.
 	outString := FFIExternalArray externalNewType: 'char' size: bufSize.
-	in := inputString asFFIExternalArrayOfType: 'char' size: inputString size.
+	in := inputString asShocoFFIExternalArrayOfType: 'char'.
 	nBytes := self 
 		shocoDecompress: in getHandle
 		length: inputString size
