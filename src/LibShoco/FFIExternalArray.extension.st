@@ -2,7 +2,7 @@ Extension { #name : #FFIExternalArray }
 
 { #category : #'*LibShoco' }
 FFIExternalArray >> asNullTerminatedString [
-	"Answer a <String> copy of the receiver"
+	"Answer a <String> copy of the receiver up to the first null character, without including it"
 
 	^ (String streamContents: [ :stream | self flattenOn: stream]) 
 		copyUpTo: Character null
