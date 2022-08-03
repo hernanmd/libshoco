@@ -1,3 +1,27 @@
+"
+Shoco is a MIT-licensed C library which provides fast compressor for short strings optimized by default for English words, but customizable to other alphabet models based on your own data. Compression is performed using [entropy encoding](https://en.wikipedia.org/wiki/Entropy_encoding)
+
+## Usage
+
+You can check the compression size over an ASCII input:
+
+```language=Pharo
+
+'But the suburbs have no charms to soothe
+The restless dreams of youth' size. ""69""
+
+(FFIShocoLib uniqueInstance shocoCompress: 'But the suburbs have no charms to soothe
+The restless dreams of youth') size. ""49""
+```
+
+## Customization
+
+You should follow two steps:
+
+1. Check the [project documentation](https://ed-von-schleck.github.io/shoco/#generating-compression-models) to generate a new compression model for your input.
+2. Visit this project [home page](https://github.com/hernanmd/libshoco) to  generate a new library and include it in your path.
+
+"
 Class {
 	#name : #FFIShocoLib,
 	#superclass : #FFILibrary,
@@ -14,10 +38,15 @@ FFIShocoLib >> macLibraryName [
 { #category : #accessing }
 FFIShocoLib >> shocoCompress: inputString [
 	"Answer the <Number> of bytes written"
-	| outString |
+	| cArray nBytes |
 
-	outString := String new: inputString size.
-	^ self shocoCompress: inputString length: 0 output: outString bufSize: outString size
+	cArray := (FFIArray externalNewType: 'char' size: inputString size) autoRelease.
+	nBytes := self 
+		shocoCompress: inputString 
+		length: 0
+		output: cArray getHandle
+		bufSize: inputString size.
+	^ cArray copyFirst: nBytes
 ]
 
 { #category : #accessing }
@@ -34,15 +63,26 @@ FFIShocoLib >> shocoCompress: inputString output: outString bufSize: bufSize [
 ]
 
 { #category : #accessing }
-FFIShocoLib >> shocoDecompress: inputString length: lenInteger output: outString bufSize: bufSize [
+FFIShocoLib >> shocoDecompress: inputString [
 
-	^ self ffiCall: #(size_t shoco_decompress(const char * inputString, size_t lenInteger, char * outString, size_t bufSize))
+	| outString nBytes bufSize in |
+	
+	bufSize := inputString size * 4.
+	outString := FFIExternalArray externalNewType: 'char' size: bufSize.
+	in := inputString asFFIExternalArrayOfType: 'char' size: inputString size.
+	nBytes := self 
+		shocoDecompress: in getHandle
+		length: inputString size
+		output: outString getHandle
+		bufSize: bufSize.
+	^ outString asNullTerminatedString
 ]
 
 { #category : #accessing }
-FFIShocoLib >> shocoDecompress: inputString output: outString bufSize: bufSize [
+FFIShocoLib >> shocoDecompress: inputString length: lenInteger output: outString bufSize: bufSize [
+	"Answer the <Number> of bytes written"
 
-	^ self shocoDecompress: inputString length: 0 output: outString bufSize: bufSize
+	^ self ffiCall: #(size_t shoco_decompress(const char * inputString, size_t lenInteger, char * outString, size_t bufSize))
 ]
 
 { #category : #'accessing - platform' }

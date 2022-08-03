@@ -25,26 +25,37 @@ FFIShocoLibTest >> setUp [
 { #category : #tests }
 FFIShocoLibTest >> testShocoCompress [
 
-	| nrBytesWritten |
+	| outString |
 	
-	nrBytesWritten := shocoLib shocoCompress: largeString.
-	self assert: nrBytesWritten <= largeString size.
+	outString := shocoLib shocoCompress: largeString.
+	self assert: outString size <= largeString size.
 	
-	nrBytesWritten := shocoLib shocoCompress: 'a'.
-	self assert: nrBytesWritten equals: 1.
+	outString := shocoLib shocoCompress: 'a'.
+	self assert: outString size equals: 1.
+]
+
+{ #category : #tests }
+FFIShocoLibTest >> testShocoCompressDecompress [
+
+	| inString compressedString uncompressedString |
 	
+	inString := 'The city shark is at the dark end of the alleyway'.
+	compressedString := FFIShocoLib uniqueInstance shocoCompress: inString.
+	uncompressedString := FFIShocoLib uniqueInstance shocoDecompress: compressedString.
 	
+	self assert: inString equals: uncompressedString
+
 ]
 
 { #category : #tests }
 FFIShocoLibTest >> testShocoCompressLengthOutputBufSize [
 
-	| nrBytesWritten outString |
+	| nBytes outString |
 	
 	outString := 'x   '.
-	nrBytesWritten := shocoLib shocoCompress: 'test' length: 1 output: outString bufSize: 4.
+	nBytes := shocoLib shocoCompress: 'test' length: 1 output: outString bufSize: 4.
 	self 
-		assert: nrBytesWritten 
+		assert: nBytes 
 		equals: 1.
 	self
 		assert: outString first
@@ -53,33 +64,31 @@ FFIShocoLibTest >> testShocoCompressLengthOutputBufSize [
 
 { #category : #tests }
 FFIShocoLibTest >> testShocoCompressOutputBufSize [
-
-	| nrBytesWritten outString |
+	| nBytes outString |
 	
-	nrBytesWritten := shocoLib shocoCompress: largeString output: (String new: 2) bufSize: 2.
-	self assert: nrBytesWritten equals: 3.
+	nBytes := shocoLib shocoCompress: largeString output: (String new: 2) bufSize: 2.
+	self assert: nBytes equals: 3.
 	
 	outString := 'x '.
-	nrBytesWritten := shocoLib shocoCompress: 'a' output: outString bufSize: 2.
-	self assert: nrBytesWritten equals: 1.
+	nBytes := shocoLib shocoCompress: 'a' output: outString bufSize: 2.
+	self assert: nBytes equals: 1.
 	self assert: outString equals: 'x '.
 	
 	outString := '   '.
-	nrBytesWritten := shocoLib shocoCompress: 'a' output: outString bufSize: 4.
-	self assert: nrBytesWritten equals: 1.
+	nBytes := shocoLib shocoCompress: 'a' output: outString bufSize: 4.
+	self assert: nBytes equals: 1.
 	
-	nrBytesWritten := shocoLib shocoCompress: 'test' output: outString  bufSize: 4.
-	self assert: nrBytesWritten <= 4.
+	nBytes := shocoLib shocoCompress: 'test' output: outString  bufSize: 4.
+	self assert: nBytes <= 4.
 	
 	outString := ' '.
-	nrBytesWritten := shocoLib shocoCompress: 'ä' output: outString bufSize: 1.
-	self assert: nrBytesWritten equals: 2.
+	nBytes := shocoLib shocoCompress: 'ä' output: outString bufSize: 1.
+	self assert: nBytes equals: 2.
 ]
 
 { #category : #tests }
 FFIShocoLibTest >> testShocoDecompressLengthOutputBufSize [
-
-	| bufSize bufLarge nrBytesWritten compressedLarge compressedLength largeLength |
+	| bufSize bufLarge nBytes compressedLarge compressedLength largeLength |
 	
 	bufSize := 2.
 	bufLarge := (FFIExternalArray externalNewType: 'char' size: bufSize)	 autoRelease.
@@ -90,54 +99,54 @@ FFIShocoLibTest >> testShocoDecompressLengthOutputBufSize [
 		shocoCompress: largeString 
 		output: compressedLarge getHandle
 		bufSize: bufSize.
-	nrBytesWritten := shocoLib 
+
+	nBytes := shocoLib 
 		shocoDecompress: compressedLarge getHandle
 		length: compressedLength 
 		output: bufLarge getHandle
 		bufSize: bufSize.
 
 	"// nrBytesWritten = bufsize + 1, because buffer too small"
-	self assert: nrBytesWritten equals: 3.
+	self assert: nBytes equals: 3.
 
-	nrBytesWritten := shocoLib 
+	nBytes := shocoLib 
 		shocoDecompress: compressedLarge getHandle
 		length: 5 
 		output: bufLarge getHandle
 		bufSize: bufSize.
-		
-	self assert: (nrBytesWritten < largeLength or: [ nrBytesWritten = 4097 ]).
+
+	self assert: (nBytes < largeLength or: [ nBytes = 4097 ]).
 ]
 
 { #category : #tests }
 FFIShocoLibTest >> testShocoDecompressNonAscii [
 
-	| bufSize compressedNonAscii nrBytesWritten compressedLength nonAsciiLength bufLarge |
+	| bufSize compressedNonAscii nBytes nonAsciiLength compLen bufLarge |
 	
 	bufSize := 256.
-	compressedNonAscii := (FFIExternalArray externalNewType: 'char' size: bufSize) autoRelease.
+	compressedNonAscii := (FFIExternalArray externalNewType: #char size: 255) autoRelease.
 	nonAsciiLength := nonAsciiString size.
-	bufLarge := (FFIExternalArray externalNewType: #char size: bufSize)	 autoRelease.
+	bufLarge := (FFIExternalArray externalNewType: #char size: 4096) autoRelease.
 	
-	compressedLength := shocoLib 
+	compLen := shocoLib 
 		shocoCompress: nonAsciiString 
 		output: compressedNonAscii getHandle
 		bufSize: bufSize.
-	bufLarge at: nonAsciiLength put: $x.
-	nrBytesWritten := shocoLib 
+
+	nBytes := shocoLib 
 		shocoDecompress: compressedNonAscii getHandle
-		length: compressedLength 
+		length: compLen 
 		output: bufLarge getHandle
 		bufSize: 4096.
 
-	self assert: nrBytesWritten equals: compressedNonAscii asNullTerminatedString size.
+	self assert: nBytes equals: nonAsciiLength + 4. "strlen(nonAsciiiString) = 20"
 
-	
 ]
 
 { #category : #tests }
 FFIShocoLibTest >> testShocoDecompressOutputBufSize [
 
-	| bufSize bufLarge nrBytesWritten compressedLarge compressedLength largeLength |
+	| bufSize bufLarge nBytes compressedLarge compressedLength largeLength |
 	
 	bufSize := 4096.
 	bufLarge := (FFIExternalArray externalNewType: 'char' size: bufSize)	 autoRelease.
@@ -148,13 +157,14 @@ FFIShocoLibTest >> testShocoDecompressOutputBufSize [
 		shocoCompress: largeString 
 		output: compressedLarge getHandle
 		bufSize: bufSize.
-	nrBytesWritten := shocoLib 
+	nBytes := shocoLib 
 		shocoDecompress: compressedLarge getHandle
 		length: compressedLength 
 		output: bufLarge getHandle
 		bufSize: bufSize.
 
-	self assert: nrBytesWritten equals: largeLength.
+	self assert: nBytes equals: largeLength.
+
 	self assert: bufLarge asNullTerminatedString equals: largeString.
 	"no null byte written"
 	self deny: bufLarge asNullTerminatedString last equals: Character null.
