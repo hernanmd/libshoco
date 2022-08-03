@@ -32,8 +32,6 @@ FFIShocoLibTest >> testShocoCompress [
 	
 	outString := shocoLib shocoCompress: 'a'.
 	self assert: outString size equals: 1.
-	
-	
 ]
 
 { #category : #tests }
@@ -66,7 +64,6 @@ FFIShocoLibTest >> testShocoCompressLengthOutputBufSize [
 
 { #category : #tests }
 FFIShocoLibTest >> testShocoCompressOutputBufSize [
-
 	| nBytes outString |
 	
 	nBytes := shocoLib shocoCompress: largeString output: (String new: 2) bufSize: 2.
@@ -91,7 +88,6 @@ FFIShocoLibTest >> testShocoCompressOutputBufSize [
 
 { #category : #tests }
 FFIShocoLibTest >> testShocoDecompressLengthOutputBufSize [
-
 	| bufSize bufLarge nBytes compressedLarge compressedLength largeLength |
 	
 	bufSize := 2.
@@ -103,6 +99,7 @@ FFIShocoLibTest >> testShocoDecompressLengthOutputBufSize [
 		shocoCompress: largeString 
 		output: compressedLarge getHandle
 		bufSize: bufSize.
+
 	nBytes := shocoLib 
 		shocoDecompress: compressedLarge getHandle
 		length: compressedLength 
@@ -117,7 +114,7 @@ FFIShocoLibTest >> testShocoDecompressLengthOutputBufSize [
 		length: 5 
 		output: bufLarge getHandle
 		bufSize: bufSize.
-		
+
 	self assert: (nBytes < largeLength or: [ nBytes = 4097 ]).
 ]
 
@@ -144,7 +141,6 @@ FFIShocoLibTest >> testShocoDecompressNonAscii [
 
 	self assert: nBytes equals: nonAsciiLength + 4. "strlen(nonAsciiiString) = 20"
 
-	
 ]
 
 { #category : #tests }
@@ -168,6 +164,7 @@ FFIShocoLibTest >> testShocoDecompressOutputBufSize [
 		bufSize: bufSize.
 
 	self assert: nBytes equals: largeLength.
+
 	self assert: bufLarge asNullTerminatedString equals: largeString.
 	"no null byte written"
 	self deny: bufLarge asNullTerminatedString last equals: Character null.
