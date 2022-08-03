@@ -7,11 +7,9 @@
 - [Description](#description)
 - [Installation](#installation)
   - [How to compile the library](#how-to-compile-the-library)
-    - [macOS] macOS
-	- [Windows] Windows
-	- [Linux] Linux
   - [Baseline String](#baseline-string)
 - [Implementation notes](#implementation-note)
+- [Usage](#usage)
 - [Contribute](#contribute)
   - [Version management](#version-management)
 - [License](#license)
@@ -74,7 +72,8 @@ If you want to add the LibShoco to your Metacello Baselines or Configurations, c
 You can verify its working by sending decompress over a compressed String:
 
 ```smalltalk
-FFIShocoLib uniqueInstance shocoDecompress: (FFIShocoLib uniqueInstance shocoCompress: 'The city shark is at the dark end of the alleyway').
+FFIShocoLib uniqueInstance shocoDecompress: 
+  (FFIShocoLib uniqueInstance shocoCompress: 'The city shark is at the dark end of the alleyway').
 ```
 
 # Contribute
