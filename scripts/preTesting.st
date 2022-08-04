@@ -1,6 +1,6 @@
 [ 
   (IceRepositoryCreator new
-	   location: (FileLocator workingDirectory / 'libshoco') / 'src';
+	   location: (FileLocator workingDirectory / 'libshoco');
 	   createRepository) register 
 ]
 on: IceDuplicatedRepository
