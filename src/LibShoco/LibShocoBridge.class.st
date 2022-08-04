@@ -1,9 +1,6 @@
 Class {
 	#name : #LibShocoBridge,
 	#superclass : #GBBridge,
-	#classInstVars : [
-		'useGitBridge'
-	],
 	#category : #LibShoco
 }
 
@@ -16,26 +13,7 @@ LibShocoBridge class >> initialize [
 { #category : #assessing }
 LibShocoBridge class >> root [
 
-	^ self useGitBridge
-		ifTrue: [ 
-			([ super root ]
-			on: GBError
-			do: [ :ex | FileLocator workingDirectory ]) / 'src' ]
-		ifFalse: [ 
-			FileSystem memory root ]
-
-]
-
-{ #category : #accessing }
-LibShocoBridge class >> useGitBridge [
-	" Read comment in #root method "
-
-	^ useGitBridge
-		ifNil: [ useGitBridge := true ]
-]
-
-{ #category : #accessing }
-LibShocoBridge class >> useGitBridge: anObject [
-
-	useGitBridge := anObject
+	^ [ super root / 'src' ]
+		on: GBError
+		do: [ :ex | (FileLocator imageDirectory parentUpTo: 'libshoco') / 'src' ]
 ]

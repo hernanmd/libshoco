@@ -36,11 +36,18 @@ Class {
 }
 
 { #category : #'accessing - platform' }
+FFIShocoLib >> macLibraryFileName [
+
+	^ 'libshoco.dylib'
+
+]
+
+{ #category : #'accessing - platform' }
 FFIShocoLib >> macLibraryName [
 
 	^ FFIMacLibraryFinder new 
 		userPaths: { LibShocoBridge root };
-		findAnyLibrary: #('libshoco.dylib').
+		findAnyLibrary: { self macLibraryFileName }
 
 ]
 
@@ -95,12 +102,24 @@ FFIShocoLib >> shocoDecompress: inputString length: lenInteger output: outString
 ]
 
 { #category : #'accessing - platform' }
+FFIShocoLib >> unixLibraryFileName [
+
+	^ 'libshoco.so'
+]
+
+{ #category : #'accessing - platform' }
 FFIShocoLib >> unixLibraryName [
 
 	^ FFIUnixLibraryFinder new 
 		userPaths: { LibShocoBridge root };
-		findAnyLibrary: #('libshoco.so').
+		findAnyLibrary: { self unixLibraryFileName }.
 
+]
+
+{ #category : #'accessing - platform' }
+FFIShocoLib >> win32LibraryFileName [
+
+	^ 'libshoco.dll'
 ]
 
 { #category : #'accessing - platform' }
@@ -108,5 +127,5 @@ FFIShocoLib >> win32LibraryName [
 
 	^ FFIWindowsLibraryFinder new 
 		userPaths: { LibShocoBridge root };
-		findAnyLibrary: #('libshoco.dll').
+		findAnyLibrary: { self win32LibraryFileName }
 ]
