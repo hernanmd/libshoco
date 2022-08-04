@@ -12,8 +12,10 @@ LibShocoBridge class >> initialize [
 
 { #category : #assessing }
 LibShocoBridge class >> root [
+	"Answer a <FileReference> which contains the library file"
 
-	^ [ super root / 'src' ]
+	^ ([ super root ]
 		on: GBError
-		do: [ :ex | (FileLocator imageDirectory parentUpTo: 'libshoco') / 'src' ]
+		do: [ :ex | (FileLocator workingDirectory / 'libshoco') ]) / 'src'
+
 ]
