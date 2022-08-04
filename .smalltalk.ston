@@ -1,1 +1,15 @@
-SmalltalkCISpec {  #loading : [    SCIMetacelloLoadSpec {      #baseline : 'LibShoco',      #directory : 'src',      #platforms : [ #pharo ]    }  ],  #testing : {    #coverage : {      #packages : [ 'LibShoco*' ]    }  }}
+SmalltalkCISpec {
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'LibShoco',
+      #directory : 'src',
+      #platforms : [ #pharo ]
+    }
+  ],
+  #preTesting: 'scripts/preTesting.st',
+  #testing : {
+    #coverage : {
+      #packages : [ 'LibShoco*' ]
+    }
+  }
+}
