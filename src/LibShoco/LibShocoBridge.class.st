@@ -7,24 +7,6 @@ Class {
 	#category : #LibShoco
 }
 
-{ #category : #accessing }
-LibShocoBridge class >> assetsPath [
-	"Return the assets path"
-
-	^ self useGitBridge
-		ifTrue: [ self assetsPathForIceberg ]
-		ifFalse: [ self assetsPathForCI ]
-
-]
-
-{ #category : #accessing }
-LibShocoBridge class >> assetsPathForIceberg [
-
-	^ [ self root ]
-		on: GBError
-		do: [ :ex | FileLocator workingDirectory ]
-]
-
 { #category : #'class initialization' }
 LibShocoBridge class >> initialize [
 
@@ -34,7 +16,14 @@ LibShocoBridge class >> initialize [
 { #category : #assessing }
 LibShocoBridge class >> root [
 
-	^ super root / 'src'
+	^ self useGitBridge
+		ifTrue: [ 
+			([ super root ]
+			on: GBError
+			do: [ :ex | FileLocator workingDirectory ]) / 'src' ]
+		ifFalse: [ 
+			FileSystem memory root ]
+
 ]
 
 { #category : #accessing }
@@ -43,4 +32,10 @@ LibShocoBridge class >> useGitBridge [
 
 	^ useGitBridge
 		ifNil: [ useGitBridge := true ]
+]
+
+{ #category : #accessing }
+LibShocoBridge class >> useGitBridge: anObject [
+
+	useGitBridge := anObject
 ]

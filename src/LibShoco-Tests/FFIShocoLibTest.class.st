@@ -13,13 +13,35 @@ Class {
 }
 
 { #category : #running }
+FFIShocoLibTest >> handleFileEx: ex [
+
+	(ex isKindOf: FileExists) ifFalse: [ ^ self ].
+	self traceCrTab: 'Deleting existing file ' , ex fullName.
+	ex ensureDelete.
+	self traceCrTab: 'Done deleting file ' , ex fullName.
+	ex retry
+]
+
+{ #category : #running }
 FFIShocoLibTest >> setUp [
 
 	super setUp.
 	shocoLib := FFIShocoLib uniqueInstance.
 	largeString := 'This is a large string that won''t possibly fit into a small buffer'.
 	nonAsciiString := 'Übergrößenträger'.
+	LibShocoBridge useGitBridge: false.
+	self writeLibraryInTempLocation.
 
+]
+
+{ #category : #running }
+FFIShocoLibTest >> tearDown [ 
+
+	[ LibShocoBridge root ensureDeleteAll ]
+	on: FileDoesNotExistException
+	do: [ : ex | ].		
+	LibShocoBridge useGitBridge: true.
+	super tearDown.
 ]
 
 { #category : #tests }
@@ -168,5 +190,21 @@ FFIShocoLibTest >> testShocoDecompressOutputBufSize [
 	self assert: bufLarge asNullTerminatedString equals: largeString.
 	"no null byte written"
 	self deny: bufLarge asNullTerminatedString last equals: Character null.
+
+]
+
+{ #category : #running }
+FFIShocoLibTest >> writeLibraryInTempLocation [
+
+	| dest newFile |
+	
+	newFile := shocoLib ffiLibraryName.
+	dest := LibShocoBridge root / newFile basename.
+	[ newFile asFileReference copyTo: dest ]
+	on: FileExists, FileDoesNotExistException
+	do: [ : ex | self handleFileEx: ex ].
+	dest exists
+		ifFalse: [ self error: 'Library file could not be copied into project directory' ].
+	newFile asFileReference ensureDelete.	
 
 ]
