@@ -1,6 +1,8 @@
 [![license-badge](https://img.shields.io/badge/license-MIT-blue.svg)](https://img.shields.io/badge/license-MIT-blue.svg)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+[![GitHub Workflow Status](https://github.com/hernanmd/libshoco/actions/workflows/CI.yml/badge.svg)](https://github.com/hernanmd/libshoco/actions/workflows/CI.yml)
+[![Coverage Status](https://coveralls.io/repos/github/hernanmd/libshoco/badge.svg?branch=master)](https://coveralls.io/github/hernanmd/libshoco?branch=master)
 
 # Table of Contents
 
