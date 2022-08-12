@@ -46,7 +46,7 @@ FFIShocoLib >> macLibraryFileName [
 FFIShocoLib >> macLibraryName [
 
 	^ FFIMacLibraryFinder new 
-		userPaths: { LibShocoBridge root };
+		userPaths: { FileLocator workingDirectory };
 		findAnyLibrary: { self macLibraryFileName }
 
 ]
@@ -111,7 +111,7 @@ FFIShocoLib >> unixLibraryFileName [
 FFIShocoLib >> unixLibraryName [
 
 	^ FFIUnixLibraryFinder new 
-		userPaths: { LibShocoBridge root };
+		userPaths: { FileLocator workingDirectory };
 		findAnyLibrary: { self unixLibraryFileName }.
 
 ]
@@ -126,6 +126,6 @@ FFIShocoLib >> win32LibraryFileName [
 FFIShocoLib >> win32LibraryName [
 
 	^ FFIWindowsLibraryFinder new 
-		userPaths: { LibShocoBridge root };
+		userPaths: { FileLocator workingDirectory };
 		findAnyLibrary: { self win32LibraryFileName }
 ]
