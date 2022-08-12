@@ -39,11 +39,11 @@ BaselineOfLibShoco >> platformFilesUrl [
 			nextPutAll: 'https://github.com/hernanmd/libshoco/raw/master/src/';
 			nextPutAll: (
 				Smalltalk os isWin32 					
-					ifTrue: [ 'libshoco.dll' ]
+					ifTrue: [ 'libshoco_win.zip' ]
 					ifFalse: [ 
 						Smalltalk os isMacOS
-							ifTrue: [ 'libshoco.dylib' ]
-							ifFalse: [ 'libshoco.so' ] ]) ])
+							ifTrue: [ 'libshoco_macos.zip' ]
+							ifFalse: [ 'libshoco_linux.zip' ] ]) ])
 ]
 
 { #category : #accessing }
