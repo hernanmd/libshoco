@@ -37,7 +37,7 @@ BaselineOfLibShoco >> platformFilesUrl [
 		stream 			
 			nextPutAll: 'https://github.com/hernanmd/resources/raw/main/';
 			nextPutAll: (
-				Smalltalk os isWin32 					
+				Smalltalk os isWindows	
 					ifTrue: [ 'libshoco_win.zip' ]
 					ifFalse: [ 
 						Smalltalk os isMacOS
