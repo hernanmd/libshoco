@@ -9,7 +9,7 @@ FFIExternalArray >> asNullTerminatedString [
 
 { #category : #'*LibShoco' }
 FFIExternalArray >> copyFirst: n [ 
-	"Answer a <String> copy of the receiver"
+	"Answer a <String> copy of the receiver up to n characters"
 
 	^ (String streamContents: [ :stream | self flattenOn: stream]) first: n
 ]

@@ -44,6 +44,7 @@ FFIShocoLib >> macLibraryFileName [
 
 { #category : #'accessing - platform' }
 FFIShocoLib >> macLibraryName [
+	"Private - See superclass comment"
 
 	^ FFIMacLibraryFinder new 
 		userPaths: { FileLocator workingDirectory };
@@ -80,7 +81,7 @@ FFIShocoLib >> shocoCompress: inputString output: outString bufSize: bufSize [
 
 { #category : #accessing }
 FFIShocoLib >> shocoDecompress: inputString [
-
+	"Decompress the compressed inputString. Answer a <String>"
 	| outString nBytes bufSize in |
 	
 	bufSize := inputString size * 4.
@@ -109,6 +110,7 @@ FFIShocoLib >> unixLibraryFileName [
 
 { #category : #'accessing - platform' }
 FFIShocoLib >> unixLibraryName [
+	"Private - See superclass comment"
 
 	^ FFIUnixLibraryFinder new 
 		userPaths: { FileLocator workingDirectory };
@@ -124,6 +126,7 @@ FFIShocoLib >> win32LibraryFileName [
 
 { #category : #'accessing - platform' }
 FFIShocoLib >> win32LibraryName [
+	"Private - See superclass comment"
 
 	^ FFIWindowsLibraryFinder new 
 		userPaths: { FileLocator workingDirectory };
