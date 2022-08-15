@@ -177,3 +177,17 @@ FFIShocoLibTest >> testShocoDecompressOutputBufSize [
 	self deny: bufLarge asNullTerminatedString last equals: Character null.
 
 ]
+
+{ #category : #tests }
+FFIShocoLibTest >> testUnixLibraryFileName [
+
+	self assert: (shocoLib unixLibraryFileName isKindOf: String).
+	self assert: (shocoLib unixLibraryFileName endsWith: 'so').
+]
+
+{ #category : #tests }
+FFIShocoLibTest >> testWin32LibraryFileName [
+
+	self assert: (shocoLib win32LibraryFileName isKindOf: String).
+	self assert: (shocoLib win32LibraryFileName endsWith: 'dll').
+]
