@@ -6,7 +6,6 @@ SmalltalkCISpec {
       #platforms : [ #pharo ]
     }
   ],
-  #preTesting: 'scripts/preTesting.st',
   #testing : {
     #coverage : {
       #packages : [ 'LibShoco*' ]
