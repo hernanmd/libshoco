@@ -22,7 +22,7 @@ FFIShocoLibTest >> setUp [
 
 ]
 
-{ #category : #test }
+{ #category : #tests }
 FFIShocoLibTest >> testMacLibraryFileName [
 
 	self assert: (shocoLib macLibraryFileName isKindOf: String).

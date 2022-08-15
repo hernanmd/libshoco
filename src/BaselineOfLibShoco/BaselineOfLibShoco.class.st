@@ -23,12 +23,11 @@ BaselineOfLibShoco >> baseline: spec [
 { #category : #accessing }
 BaselineOfLibShoco >> ensureMetacelloFileDownload [
 
-	EpMonitor disableDuring: [
-		Metacello new
-			baseline: 'MetacelloFileDownload';
-			onWarningLog;
-			repository: 'github://hernanmd/MetacelloFileDownload';
-			load ]
+	Metacello new
+		baseline: 'MetacelloFileDownload';
+		onWarningLog;
+		repository: 'github://hernanmd/MetacelloFileDownload';
+		load
 ]
 
 { #category : #accessing }
@@ -36,7 +35,7 @@ BaselineOfLibShoco >> platformFilesUrl [
 
 	^ Array with: (String streamContents: [ : stream |		
 		stream 			
-			nextPutAll: 'https://github.com/hernanmd/libshoco/raw/master/src/';
+			nextPutAll: 'https://github.com/hernanmd/resources/raw/main/';
 			nextPutAll: (
 				Smalltalk os isWin32 					
 					ifTrue: [ 'libshoco_win.zip' ]
@@ -48,6 +47,12 @@ BaselineOfLibShoco >> platformFilesUrl [
 
 { #category : #accessing }
 BaselineOfLibShoco >> preLoad [
-    self ensureMetacelloFileDownload.
-    super preLoad.
+
+	self ensureMetacelloFileDownload.
+	super preLoad.
+	(#('libshoco.dylib' 'libshoco.dll' 'libshoco.so') 
+		anySatisfy: [ : fileName | fileName asFileReference exists ])
+			ifTrue: [ self traceCr: 'Library downloaded and uncompressed successfully' ]
+			ifFalse: [ self traceCr: 'Warning: Library not found' ].
+
 ]
