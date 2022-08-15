@@ -38,7 +38,7 @@ Instead of using the library provided in this repository, you can compile your o
 ### macOS
 
 ```bash
-github clone https://github.com/Ed-von-Schleck/shoco.git
+git clone https://github.com/Ed-von-Schleck/shoco.git
 cd shoco
 clang -shared -undefined dynamic_lookup -o libshoco.dylib shoco.c
 ```
